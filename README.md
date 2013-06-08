@@ -1,14 +1,16 @@
 # rework-project
 
+Testing out Rework and Component working together instead of using Sass. Rework
+is more of a post-processor for the CSS. It doesn't have a runtime and works in a
+similar way to my old Scaffold project.
+
+## Usage
+
 ```
   npm install
   component install
   make build
 ```
-
-Testing out Rework and Component working together instead of using Sass. Rework
-is more of a post-processor for the CSS. It doesn't have a runtime and works in a
-similar way to my old Scaffold project.
 
 ## Why?
 
