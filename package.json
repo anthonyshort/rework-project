@@ -1,0 +1,14 @@
+{
+  "name": "rework-project",
+  "private": true,
+  "version": "0.0.0",
+  "dependencies": {
+    "component-whitespace": "*",
+    "rework": "~0.15.0",
+    "rework-variables": "*",
+    "rework-inherit": "*",
+    "autoprefixer": "*",
+    "stdin": "*",
+    "clean-css": "~1.0.7"
+  }
+}

@@ -1,0 +1,19 @@
+%foo
+  color: red
+  &:after
+    triangle: "north" 20px 10px red
+  .baz
+    background: blue
+
+.bar
+  .baz
+    color: red
+
+.extending
+  extend: %foo
+
+@keyframes foo
+  0%
+    background: red
+  100%
+    background: blue

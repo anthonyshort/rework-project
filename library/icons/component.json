@@ -1,0 +1,14 @@
+{
+  "name": "icons",
+  "description": "icons",
+  "version": "0.0.1",
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "styles": [
+    "index.styl"
+  ],
+  "files": [
+    "assets/image.png"
+  ]
+}
