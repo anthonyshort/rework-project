@@ -24,9 +24,6 @@ module.exports = function(css, rework) {
   // Allow inlining of images using inline()
   css.use(rework.inline('./'));
 
-  // Prefixed-keyframes
-  // css.use(rework.keyframes());
-
   // Extra easing functions
   css.use(rework.ease());
 
