@@ -53,12 +53,30 @@ module on npm and access it with rework.
 * Minifying via clean-css
 * Plus a lot more...
 
-## Component and Assets
+## Component
 
-The biggest benefit is that this all just works with Component. This means
-we can write truly modular CSS packages. Just include all of the assets in a
+When you need to pull in some third-party code, just use npm if it's a Rework
+plugin or use Component if it's plain CSS. Rework plugins are for generated
+CSS, like dynamic grids, whereas Component packages are for things like resets
+and utility classes.
+
+See the suitcss repos on Github for perfect examples of CSS packages.
+
+## Assets
+
+The biggest benefit is that this all just works with Component.
+
+This means we can write truly modular CSS packages. Just include all of the assets in a
 component, like images, fonts etc and Component will take care of copying them
 over to the build directory and rewriting all the urls.
+
+To see this in action, look a the local component `icons`. This is a Component
+package. It has images and they are copied across during the build. I'm doing
+this on a project at the moment with Sass but I'm relying on functions and variables
+to get it done.
+
+We're building things the same way you would build JS projects with Component,
+and it's %$&%@$# awesome.
 
 ## Config
 
