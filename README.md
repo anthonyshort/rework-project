@@ -45,6 +45,7 @@ module on npm and access it with rework.
 ## Features
 
 * Whitespace syntax
+* Generated grid classes, spacing classes and visibility classes
 * Nested selectors
 * Variables
 * Custom functions
@@ -78,13 +79,33 @@ to get it done.
 We're building things the same way you would build JS projects with Component,
 and it's %$&%@$# awesome.
 
-## Config
+## Reworker
 
-The `config.js` file is just a function that is passed a rework object so you
-can customize Rework per-project. If the build script could be wrapped up in a
-module itself, we'd be left with a tiny module that just accepts CSS as input,
-creates a rework object, passes it to the config, and then spits out CSS.
+This CLI that lives in `/bin` that takes CSS as input and passes the Rework object and some options to
+the `rework.js` file. It takes care of the whitespace syntax conversion and minification.
+
+```
+reworker < master.css > master.min.css --minify
+```
+
+Or change the config file
+
+```
+reworker < master.css --config config.js
+```
+
+### Sharing Modules
+
+One great thing about this approach is that we are declaring the variables and the
+breakpoints in JS and passing them to the CSS. This means we use this data on the
+front-end.
+
+For example, a breakpoint component on the client-side could require the breakpoints
+object, add some window resize events and now both the CSS and JavaScript are using
+the same breakpoints while only declaring them once.
 
 ## TODO
 
-Wrap this into a nicer API.
+* Split out Reworker into a project
+* Split fractional-widths, spacing, and visibility into projects
+* Add a grunt task for Reworker

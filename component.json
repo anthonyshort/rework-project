@@ -6,7 +6,9 @@
   "keywords": [],
   "dependencies": {
   },
-  "paths": ["library"],
+  "paths": [
+    "library"
+  ],
   "local": [
     "icons"
   ],

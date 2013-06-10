@@ -9,7 +9,7 @@ var program = require('commander'),
 program
   .option('--variant <name>', 'build a variant')
   .option('-c', '--config <file>', 'path to the rework config', './rework.js')
-  .option('-m', '--minify', 'compress the CSS output')
+  .option('--minify', 'compress the CSS output')
   .option('-w', '--whitespace', 'parse CSS through css-whitespace');
 
 program.parse(process.argv);
