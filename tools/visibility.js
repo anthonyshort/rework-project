@@ -1,6 +1,6 @@
 function getRules(options) {
-  var prefix = options.prefix || '';
-  var suffix = options.suffix || '';
+  var invisible = options.invisible || 'invisibleAt{n}';
+  var visible = options.visible || 'visibleAt{n}';
   var rules = [];
 
   var createRule = function(selector, properties) {
@@ -13,20 +13,21 @@ function getRules(options) {
     });
     return {
       type: 'rule',
-      selectors: [ '.' + prefix + selector + suffix ],
+      selectors: [ selector ],
       declarations: declarations
     };
   };
 
   options.breakpoints.forEach(function(n){
-    if(n !== options.columns) {
-      rules.push(createRule('visibleAt' + n, {
+    if(n !== options.current) {
+      var selector = visible.replace('{n}', n);
+      rules.push(createRule(selector, {
         'display': 'none'
       }));
     }
   });
 
-  rules.push(createRule('invisibleAt' + options.columns, {
+  rules.push(createRule(invisible.replace('{n}', options.current), {
     'display': 'none'
   }));
 

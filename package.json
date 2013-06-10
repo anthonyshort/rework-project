@@ -10,6 +10,7 @@
     "autoprefixer": "*",
     "stdin": "*",
     "clean-css": "~1.0.7",
-    "css-whitespace": "~1.1.0"
+    "css-whitespace": "~1.1.0",
+    "commander": "~1.1.1"
   }
 }

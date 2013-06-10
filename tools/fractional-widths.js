@@ -1,4 +1,6 @@
-function getRules(n, prefix, suffix, divider) {
+function getRules(options) {
+  var n = options.divisions;
+  var selector = options.selector || ('.size{size}of' + n);
   var rules = [];
 
   var createRule = function(selector, properties) {
@@ -11,13 +13,17 @@ function getRules(n, prefix, suffix, divider) {
     });
     return {
       type: 'rule',
-      selectors: [ '.' + prefix + selector + suffix ],
+      selectors: [ selector ],
       declarations: declarations
     };
   };
 
+  var getSelector = function(n, total) {
+    return selector.replace('{size}', n);
+  }
+
   for (var i = 1; i <= n; i++) {
-    rules.push(createRule('w-' + i + divider + n, {
+    rules.push(createRule(getSelector(i, n), {
       'width': parseFloat((i / n * 100).toFixed(6)) + '%'
     }));
   };
@@ -26,12 +32,8 @@ function getRules(n, prefix, suffix, divider) {
 }
 
 module.exports = function(options) {
-  var prefix = options.prefix || '';
-  var suffix = options.suffix || '';
-  var divider = options.divider || 'of';
-
   return function(style) {
-    var rules = getRules(options.divisions, prefix, suffix, divider);
+    var rules = getRules(options);
     if(options.media) {
       style.rules.push({
         type: 'media',

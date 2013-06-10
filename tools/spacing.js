@@ -1,5 +1,6 @@
-function getRules(sizes, prefix, suffix) {
+function getRules(options) {
   var rules = [];
+  var selector = options.selector || ('.{type}-{size}of' + options.sizes.length);
 
   var createRule = function(selector, properties) {
     var declarations = Object.keys(properties).map(function(name){
@@ -11,56 +12,60 @@ function getRules(sizes, prefix, suffix) {
     });
     return {
       type: 'rule',
-      selectors: [ '.' + prefix + selector + suffix],
+      selectors: [ selector ],
       declarations: declarations
     };
   };
 
-  sizes.forEach(function(size, i){
+  var getSelector = function(type, size) {
+    return selector.replace('{type}', type).replace('{size}', size);
+  };
+
+  options.sizes.forEach(function(size, i){
     var n = i + 1;
-    rules.push(createRule('m-' + n, {
+    rules.push(createRule(getSelector('m', n), {
       'margin': size
     }));
-    rules.push(createRule('mt-' + n, {
+    rules.push(createRule(getSelector('mt', n), {
       'margin-top': size
     }));
-    rules.push(createRule('mb-' + n, {
+    rules.push(createRule(getSelector('mb', n), {
       'margin-bottom': size
     }));
-    rules.push(createRule('ml-' + n, {
+    rules.push(createRule(getSelector('ml', n), {
       'margin-left': size
     }));
-    rules.push(createRule('mr-' + n, {
+    rules.push(createRule(getSelector('mr', n), {
       'margin-right': size
     }));
-    rules.push(createRule('my-' + n, {
+    rules.push(createRule(getSelector('my', n), {
       'margin-top': size,
       'margin-bottom': size
     }));
-    rules.push(createRule('mx-' + n, {
+    rules.push(createRule(getSelector('mx', n), {
       'margin-left': size,
       'margin-right': size
     }));
-    rules.push(createRule('p-' + n, {
+    rules.push(createRule(getSelector('p', n), {
       'padding': size
     }));
-    rules.push(createRule('pt-' + n, {
+    rules.push(createRule(getSelector('pt', n), {
       'padding-top': size
     }));
-    rules.push(createRule('pb-' + n, {
+    rules.push(createRule(getSelector('pb', n), {
       'padding-bottom': size
     }));
-    rules.push(createRule('pl-' + n, {
+    rules.push(createRule(getSelector('pl', n), {
       'padding-left': size
     }));
-    rules.push(createRule('pr-' + n, {
+    rules.push(createRule(getSelector('pr', n), {
       'padding-right': size
     }));
-    rules.push(createRule('py-' + n, {
+    rules.push(createRule(getSelector('py', n), {
       'padding-top': size,
       'padding-bottom': size
     }));
-    rules.push(createRule('px-' + n, {
+    rules.push(createRule(getSelector('px', n), {
       'padding-left': size,
       'padding-right': size
     }));
@@ -70,10 +75,8 @@ function getRules(sizes, prefix, suffix) {
 }
 
 module.exports = function(options) {
-  var prefix = options.prefix || '';
-  var suffix = options.suffix || '';
   return function(style) {
-    var rules = getRules(options.sizes, prefix, suffix);
+    var rules = getRules(options);
     if(options.media) {
       style.rules.push({
         type: 'media',

@@ -1,15 +1,12 @@
 var autoprefixer = require('autoprefixer'),
-    vars = require('rework-variables'),
     rework = require('rework'),
-    whitespace = require('css-whitespace'),
-    minify = require('clean-css').process,
+    vars = require('rework-variables'),
     widths = require('./tools/fractional-widths'),
     spacing = require('./tools/spacing'),
     visibility = require('./tools/visibility'),
     inherit = require('rework-inherit');
 
-module.exports = function(str) {
-  var css = rework(str);
+module.exports = function(css, options) {
 
   // These variables will be available in
   // the CSS and we can use them in the JS
@@ -103,55 +100,66 @@ module.exports = function(str) {
   css.use(rework.references());
 
   // Retina background images
-  css.use(rework.at2x());
+  if(options.variant !== 'ie8') {
+    css.use(rework.at2x());
+  }
 
   // Auto-prefix properties and values
-  css.use(autoprefixer.rework(["last 2 versions", "ie 8"]));
+  if(options.variant === 'ie8') {
+    css.use(autoprefixer.rework(["ie 8"]));
+  }
+  else {
+    css.use(autoprefixer.rework(["last 2 versions"]));
+  }
 
   // Loop through each breakpoint and generate some
   // breakpoint-specific classes. Normally in Sass you
   // would do this just using loops and mixins, but this
   // is only done once so why don't we just do it here
-  Object.keys(breakpoints).forEach(function(query, i){
-    var data = breakpoints[query];
-    css.use(widths({
-      divisions: data.columns,
-      prefix: 'u-',
-      divider: 'at',
-      media: query
-    }));
-    css.use(spacing({
-      prefix: 'u-',
-      suffix: 'at' + data.columns,
-      sizes: data.spacing,
-      media: query
-    }));
-    css.use(visibility({
-      prefix: 'u-',
-      columns: data.columns,
-      breakpoints: breakpointColumns,
-      media: query
-    }));
-  });
+  if(options.variant !== 'ie8') {
+    Object.keys(breakpoints).forEach(function(query, i){
+      var data = breakpoints[query];
+      css.use(widths({
+        selector: '.u-w-{size}at' + data.columns,
+        divisions: data.columns,
+        media: query
+      }));
+      css.use(spacing({
+        selector: '.u-{type}-{size}at' + data.columns,
+        sizes: data.spacing,
+        media: query
+      }));
+      css.use(visibility({
+        invisible: '.u-invisibleAt{n}',
+        visible: '.u-visibleAt{n}',
+        current: data.columns,
+        breakpoints: breakpointColumns,
+        media: query
+      }));
+    });
+  }
 
   // Create fallback classes for browsers without
   // any media queries. This could be generated into
   // a separate file so good browsers don't need crap
   // in there just to support IE8
-  css.use(spacing({
-    prefix: 'no-mediaqueries .u-',
-    sizes: ['0', '10px', '20px', '40px']
-  }));
-  css.use(widths({
-    divisions: 12,
-    prefix: 'no-mediaqueries .u-',
-    divider: 'at'
-  }));
-  css.use(visibility({
-    prefix: 'no-mediaqueries .u-',
-    columns: 12,
-    breakpoints: breakpointColumns
-  }));
+  if(options.variant === 'ie8') {
+    css.use(spacing({
+      selector: '.u-{type}-{size}at12',
+      sizes: ['0', '10px', '20px', '40px']
+    }));
+    css.use(widths({
+      divisions: 12,
+      selector: '.u-w-{size}at12',
+      divider: 'at'
+    }));
+    css.use(visibility({
+      invisible: '.u-invisibleAt12',
+      visible: '.u-visibleAt{n}',
+      columns: 12,
+      breakpoints: breakpointColumns
+    }));
+  }
 
   // Allow selector extending. This comes at the very
   // end so that we can extend any of the classes that
@@ -160,6 +168,4 @@ module.exports = function(str) {
     propertyRegExp: /^extend$/
   }));
 
-  // return minify( css.toString({ compress: true }) );
-  return css.toString({ compress: false });
 };
