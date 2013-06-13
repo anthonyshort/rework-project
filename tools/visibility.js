@@ -1,6 +1,8 @@
 function getRules(options) {
   var invisible = options.invisible || 'invisibleAt{n}';
   var visible = options.visible || 'visibleAt{n}';
+  var inline = options.inline || 'inlineAt{n}';
+  var inlineBlock = options.inlineBlock || 'inlineBlock{n}';
   var rules = [];
 
   var createRule = function(selector, properties) {
@@ -18,17 +20,20 @@ function getRules(options) {
     };
   };
 
-  options.breakpoints.forEach(function(n){
-    if(n !== options.current) {
-      var selector = visible.replace('{n}', n);
-      rules.push(createRule(selector, {
-        'display': 'none'
-      }));
-    }
-  });
-
   rules.push(createRule(invisible.replace('{n}', options.current), {
     'display': 'none'
+  }));
+
+  rules.push(createRule(visible.replace('{n}', options.current), {
+    'display': 'block'
+  }));
+  
+  rules.push(createRule(inline.replace('{n}', options.current), {
+    'display': 'inline'
+  }));
+
+  rules.push(createRule(inlineBlock.replace('{n}', options.current), {
+    'display': 'inline-block'
   }));
 
   return rules;
